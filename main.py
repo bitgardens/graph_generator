@@ -38,7 +38,8 @@ for i in range(len(inverted_matrix)):
             edges[3] = inverted_matrix[i][j - 1].get("type")
 
         if inverted_matrix[i][j].get("type") != "none":
-            binary_edges = ""
+            # Formatado em cima-dir-baixo-esq
+            binary_edges = "" 
             for edge in edges:
                 if edge != "none":
                     binary_edges += "1"
@@ -49,7 +50,6 @@ for i in range(len(inverted_matrix)):
         node = {
             "type": matrix[i][j].get("type"),
             "position": (i, j),
-            "edges": edges,
         }
 
         all_graph["meta"][id] = node
