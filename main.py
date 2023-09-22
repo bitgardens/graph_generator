@@ -19,7 +19,7 @@ all_graph = {"topology": {}, "meta": {}}
 for i in range(len(inverted_matrix)):
     for j in range(len(inverted_matrix[i])):
         edges = [None] * 4
-        id = str(encode_node_id(i, j))
+        id = str(encode_node_id(i, (len(inverted_matrix[i]) - j - 1)))
 
         # Vertice de cima (top)
         if i - 1 >= 0:
@@ -39,7 +39,7 @@ for i in range(len(inverted_matrix)):
 
         if inverted_matrix[i][j].get("type") != "none":
             # Formatado em cima-dir-baixo-esq
-            binary_edges = "" 
+            binary_edges = ""
             for edge in edges:
                 if edge != "none":
                     binary_edges += "1"
@@ -49,7 +49,7 @@ for i in range(len(inverted_matrix)):
 
         node = {
             "type": matrix[i][j].get("type"),
-            "position": (i, j),
+            "position": (i, (len(inverted_matrix[i]) - j - 1)),
         }
 
         all_graph["meta"][id] = node
