@@ -49,7 +49,6 @@ for i in range(len(inverted_matrix)):
 
         node = {
             "type": matrix[i][j].get("type"),
-            "position": (i, (len(inverted_matrix[i]) - j - 1)),
         }
 
         all_graph["meta"][id] = node
