@@ -1,10 +1,10 @@
 import json
-from node_id_encoder import encode_node_id
+from node_id_encoder import encode_node_id, decode_node_id
 
 # A importação do arquivo level.json vem da pasta debug
 # se quiser utilizar outro arquivo, coloque o seu caminho correto
 
-json_file = open("./debug/level.json", "r")
+json_file = open("./debug/level2.json", "r")
 
 matrix = json.load(json_file)
 inverted_matrix = [list(coluna) for coluna in zip(*matrix)]
@@ -48,7 +48,7 @@ for i in range(len(inverted_matrix)):
             all_graph["topology"][id] = binary_edges
 
         node = {
-            "type": matrix[i][j].get("type"),
+            "type": inverted_matrix[i][j].get("type"),
         }
 
         all_graph["meta"][id] = node
