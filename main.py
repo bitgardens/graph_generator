@@ -1,43 +1,50 @@
 import json
-from node_id_encoder import encode_node_id, decode_node_id
+from node_id_encoder import encode_node_id
 
 # A importação do arquivo level.json vem da pasta debug
 # se quiser utilizar outro arquivo, coloque o seu caminho correto
 
-json_file = open("./debug/level2.json", "r")
+json_file = open("./debug/level-cs.json", "r")
 
-matrix = json.load(json_file)
-inverted_matrix = [list(coluna) for coluna in zip(*matrix)]
+map = json.load(json_file)
 
-graph = open("all_graph.json", "w")
+matrix = map['map']
 
-all_graph = {"topology": {}, "meta": {}}
+
+# print(matrix)
+
+graph = open("graph-cs.json", "w")
+
+all_graph = {"topology": {}, "meta": {}, "core": {}, "spawners": []}
+
+all_graph["core"] = map["metadata"]["core"]
+all_graph["spawners"] = map["metadata"]["spawners"]
 
 
 # Dentro do loop eu preciso olhar para as 4 direções da matriz
 
-for i in range(len(inverted_matrix)):
-    for j in range(len(inverted_matrix[i])):
+for i in range(len(matrix)):
+    for j in range(len(matrix[i])):
         edges = [None] * 4
-        id = str(encode_node_id(i, (len(inverted_matrix[i]) - j - 1)))
+        id = str(encode_node_id(i, (len(matrix[i]) - j - 1)))
 
         # Vertice de cima (top)
         if i - 1 >= 0:
-            edges[0] = inverted_matrix[i - 1][j].get("type")
+            edges[0] = matrix[i - 1][j].get("type")
 
         # Verice direita (right)
-        if j + 1 < len(inverted_matrix[i]):
-            edges[1] = inverted_matrix[i][j + 1].get("type")
+        if j + 1 < len(matrix[i]):
+            edges[1] = matrix[i][j + 1].get("type")
 
         # Vertice de baixo (bottom)
-        if i + 1 < len(inverted_matrix):
-            edges[2] = inverted_matrix[i + 1][j].get("type")
+        if i + 1 < len(matrix):
+            edges[2] = matrix[i + 1][j].get("type")
 
         # Vertice esquerda (left)
         if j - 1 >= 0:
-            edges[3] = inverted_matrix[i][j - 1].get("type")
+            edges[3] = matrix[i][j - 1].get("type")
 
-        if inverted_matrix[i][j].get("type") != "none":
+        if matrix[i][j].get("type") != "none":
             # Formatado em cima-dir-baixo-esq
             binary_edges = ""
             for edge in edges:
@@ -48,7 +55,7 @@ for i in range(len(inverted_matrix)):
             all_graph["topology"][id] = binary_edges
 
         node = {
-            "type": inverted_matrix[i][j].get("type"),
+            "type": matrix[i][j].get("type"),
         }
 
         all_graph["meta"][id] = node
