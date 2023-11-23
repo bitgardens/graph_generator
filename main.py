@@ -4,21 +4,25 @@ from node_id_encoder import encode_node_id
 # A importação do arquivo level.json vem da pasta debug
 # se quiser utilizar outro arquivo, coloque o seu caminho correto
 
-json_file = open("./debug/level-cs.json", "r")
+json_file = open("./debug/levelTeste2.json", "r")
 
 map = json.load(json_file)
 
 matrix = map['map']
 
-
-# print(matrix)
-
-graph = open("graph-cs.json", "w")
+graph = open("graph-teste2.json", "w")
 
 all_graph = {"topology": {}, "meta": {}, "core": {}, "spawners": []}
 
-all_graph["core"] = map["metadata"]["core"]
-all_graph["spawners"] = map["metadata"]["spawners"]
+core = map["metadata"]["core"]
+core['y'] = len(matrix) - core['y']
+
+spawners = map["metadata"]["spawners"]
+for i in range(len(spawners)):
+    spawners[i]['y'] = len(matrix) - spawners[i]['y']
+
+all_graph["core"] = core
+all_graph["spawners"] = spawners
 
 
 # Dentro do loop eu preciso olhar para as 4 direções da matriz
